@@ -1,0 +1,22 @@
+{
+  "name": "back-test",
+  "version": "1.0.0",
+  "description": "Test for the init project in nodejs",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Jose useche",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  },
+  "repository" :
+  { "type" : "git",
+    "url" : "https://github.com/npm/cli.git"
+  }
+}
