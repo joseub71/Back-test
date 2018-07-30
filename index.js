@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -29,7 +30,7 @@ app.get('/user/:userId', (req, res, next) => {
 
 
 app.post('/user', (req, res, next) => {
-    // res.body para acceder a la data de los formularios
+    // req.body para acceder a la data de los formularios
     res.send({ menssage: 'Ja quien lo diria data recibida para guardar!!' })
 })
 
@@ -40,6 +41,29 @@ app.put('/user/:userId', (req, res, next) => {
 app.delete('/user/:userId', (req, res, next) => {
     res.send({ menssage: `Ja quien lo diria eliminaras el siguiente id = ${req.params.userId}` })
 })
+
+//Uso de file system
+
+app.get('/file/:fileName', (req, res, next) => {
+    
+    fs.readFile(`files/${req.params.fileName}.json`, 'utf8', function(err,data) {
+        if(err)
+            res.status(500).send({ menssage: 'Algo salio mal' })
+        else
+        res.status(200).send(JSON.parse(data))
+    });
+})
+
+
+app.post('/file', (req, res, next) => {
+    fs.writeFile(`files/${req.body.name}.json`, req.body.content, "utf8", (err) => {
+        if (err) throw err;
+    
+        res.send({ menssage: 'El archivo se creo correctamente' })
+    });
+
+})
+
 
 // const test = (req, res, next) => {
 //     console.log(req)
