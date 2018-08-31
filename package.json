@@ -10,13 +10,15 @@
   "license": "Apache-2.0",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "mongoose": "^5.2.12",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"
   },
-  "repository" :
-  { "type" : "git",
-    "url" : "https://github.com/npm/cli.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/cli.git"
   }
 }

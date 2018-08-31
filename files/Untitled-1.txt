@@ -1,0 +1,7 @@
+1) manejo de archivos (llamara un archivo y lo enviara al front como un json) // Listo
+2) envio de correos nodeMailer smtp de gmail
+3) envio html desde node
+4) mongoose con decoradores y demas
+
+
+microsoft build esencial para node
