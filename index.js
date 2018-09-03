@@ -35,7 +35,7 @@ app.get('/user/:userId', (req, res, next) => {
 
 
 app.post('/user', (req, res, next) => {
-    // res.body para acceder a la data de los formularios
+    // req.body para acceder a la data de los formularios
     res.send({ menssage: 'Ja quien lo diria data recibida para guardar!!' })
 })
 
@@ -73,33 +73,50 @@ app.post('/file', (req, res, next) => {
 app.get('/torneos', (req, res, next) => {
            
     request('http://api.sportradar.us/football-t1/american/en/tournaments.json?api_key=ed2utyf36m636v2424vgtxgj', function (error, response, body) {
-        console.log('error:', error); // Print the error if one occurred
-        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-        console.log('body:', body); // Print the HTML for the Google homepage.
-        var x =  JSON.parse(body).tournaments;
-        let info = [];
-        x.map((value) => {        
-            info.push(request(`http://api.sportradar.us/football-t1/american/en/tournaments/${value.id}/info.json?api_key=ed2utyf36m636v2424vgtxgj`));
-            value._id = value.id
+        let x = JSON.parse(body).tournaments;
+        let ola = x.map((value) => {        
+                value._id = value.id
+                return PromiseData(value);
+                // var initializePromise = PromiseData(value);
+                // return initializePromise.then((result) => {
+                //     value.tournamentInfo = result;
+                //     console.log(value);
+                //     return value;
+                // }, function(err) {
+                //     console.log(err);
+                // })
+            });
+console.log(ola);
+            Promise.all(ola).then(values => { 
+                console.log(values);
+              });
 
-            return value;
-        });
+            // torneoModel.insertMany(value, function(err, response){
+            //     if (err) return res.send({err: err});
+            //     res.send({ response: response });
+            // })
 
-        Promise.all(info).then(values => { 
-            console.log(values);
-          });
-        // res.send( x);
+        res.send(ola);
         
-        torneoModel.insertMany(x, function(err, response){
-            if (err) res.send({err: err});
-            res.send({ response:response });
+      
         })
 
-
+        function PromiseData(data){
+            return new Promise((resolve, reject) => {
+                request(`http://api.sportradar.us/football-t1/american/en/tournaments/${data._id}/info.json?api_key=ed2utyf36m636v2424vgtxgj`, (errorT, responseT, bodyT) => {
+                    // console.log('error:', errorT); // Print the error if one occurred
+                    // console.log('statusCode:', responseT && responseT.statusCode); // Print the response status code if a response was received
+                    // console.log('body:', bodyT); // Print the HTML for the Google homepage.
+                    if(responseT.statusCode == '200'){
+                        resolve(JSON.parse(bodyT));
+                    }
+                    if (errorT) {
+                        reject(errorT);
+                    }
+                });
+            })
+        }
     });
-
-
-})
 
 
 // const test = (req, res, next) => {
